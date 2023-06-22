@@ -20,13 +20,13 @@ export class ProductStore {
     }
   }
 
-  async show(id: number): Promise<Product[]> {
+  async show(id: number): Promise<Product> {
     try {
       const conn = await Client.connect();
       const sql = `SELECT * FROM "Product" AS product WHERE product.id = ($1)`;
       const result = await conn.query(sql, [id]);
       conn.release();
-      return result.rows;
+      return result.rows[0];
     } catch (error) {
       throw new Error(`Error: ${error}`);
     }

@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { Product, ProductStore } from "../models/Product";
+import bcrypt from "bcrypt";
 
 const productStore = new ProductStore();
 
@@ -12,8 +13,7 @@ const getAllProduct = async (request: Request, response: Response) => {
 const getProductById = async (request: Request, response: Response) => {
   try {
     let id: number = parseInt(request.params.id);
-    const product = await productStore.show(id);
-    console.log(product);
+    const product: Product = await productStore.show(id);
     response.json(product);
   } catch (error) {
     response.status(400);
