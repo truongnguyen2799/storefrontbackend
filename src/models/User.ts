@@ -19,26 +19,61 @@ export type User = {
 
 export class UserStore {
   async login(account: string, password: string): Promise<boolean> {
+    let check = false;
     try {
-      const passwordCheck = await this.getPass(account);
-      return bcrypt.compareSync(password + pepper, passwordCheck);
+      if (account == "" || password == "") {
+        return check;
+      }
+
+      let userCheck = await this.getByAccount(account);
+
+      if (userCheck == null || userCheck.account == "") {
+        return check;
+      }
+
+      let passwordCheck = userCheck.password;
+
+      if (bcrypt.compareSync(password + pepper, passwordCheck)) {
+        check = true;
+      }
+      return check;
     } catch (error) {
-      throw new Error(`Error: ${error}`);
+      return check;
     }
   }
 
   async insert(user: User): Promise<number> {
     try {
       let checkUser = await this.getByAccount(user.account);
-
-      if (checkUser.account != "") {
+      if (checkUser != null && checkUser.account != "") {
         return -1;
       } else {
         const hash = bcrypt.hashSync(user.password + pepper, saltRounds);
+        console.log(typeof(hash));
+        const conn = await Client.connect();
+        const sql = `INSERT INTO "User" (firstname, lastname, account, password) VALUES ($1, $2, $3, $4)`;
+        const result = await conn.query(sql, [
+          user.fristname,
+          user.lastname,
+          user.account,
+          hash,
+        ]);
+        conn.release();
         return 0;
       }
     } catch (error) {
       throw new Error(`Error: ${error}`);
+    }
+  }
+
+  async getByAccount(account: string): Promise<User> {
+    try {
+      const conn = await Client.connect();
+      const sql = `SELECT * FROM "User" AS u WHERE u.account = ($1)`;
+      const result = await conn.query(sql, [account]);
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(`Could not get users. Error: ${error}`);
     }
   }
 
@@ -54,24 +89,11 @@ export class UserStore {
     }
   }
 
-  async getByAccount(account: string): Promise<User> {
+  async getById(id: number): Promise<User> {
     try {
       const conn = await Client.connect();
-      const sql = `SELECT * FROM "User" AS u WHERE u.account = ($1)`;
-      const result = await conn.query(sql, [account]);
-      return result.rows[0];
-    } catch (error) {
-      throw new Error(`Could not get users. Error: ${error}`);
-    }
-  }
-
-  async getPass(account: string): Promise<string> {
-    try {
-      const conn = await Client.connect();
-      const sql = `SELECT u.password FROM "User" AS u WHERE u.account = ($1)`;
-      const result = await conn.query(sql, [account]);
-
-      let u = this.getByAccount(account);
+      const sql = `SELECT * FROM "User" AS u WHERE u.id = ($1)`;
+      const result = await conn.query(sql, [id]);
       return result.rows[0];
     } catch (error) {
       throw new Error(`Could not get users. Error: ${error}`);

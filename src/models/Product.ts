@@ -42,7 +42,6 @@ export class ProductStore {
         product.category,
       ]);
       conn.release();
-      console.log(result);
       return result.rows;
     } catch (error) {
       throw new Error(`Error: ${error}`);
