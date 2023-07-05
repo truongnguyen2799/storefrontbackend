@@ -148,6 +148,6 @@ var userController = function (app) {
     app.post("/login", login);
     app.get("/user/all", authen_1.verifyAuthToken, index);
     app.get("/user/:id", authen_1.verifyAuthToken, show);
-    app.post("/user/insert", authen_1.verifyAuthToken, insert);
+    app.post("/user/insert", insert);
 };
 exports.default = userController;
