@@ -56,6 +56,7 @@ var login = function (request, response) { return __awaiter(void 0, void 0, void
                 check = _a.sent();
                 if (check) {
                     token = (0, authen_1.generateAccessToken)(account);
+                    response.status(200);
                     response.json({ token: token });
                 }
                 else {

@@ -13,6 +13,7 @@ const login = async (request: Request, response: Response) => {
   const check = await userStore.login(account, password);
   if (check) {
     const token = generateAccessToken(account);
+    response.status(200);
     response.json({ token });
   } else {
     response.status(400);

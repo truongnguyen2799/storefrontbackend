@@ -1,6 +1,6 @@
 {
   "spec_dir": "build/tests",
-  "spec_files": ["**/*[sS]pec.?(m)js", "!**/*nospec.js"],
+  "spec_files": ["**/*[sS]pec.?(m)js", "!**/*nospec.js", "[sSpec].js","**/*[tT]est.?(m)js"],
   "helpers": ["helpers/**/*.?(m)js"],
   "env": {
     "failSpecWithNoExpectations": false,

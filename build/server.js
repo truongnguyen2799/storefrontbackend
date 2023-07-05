@@ -17,3 +17,4 @@ app.use(body_parser_1.default.json());
 app.listen(port, function () {
     console.log("server started at localhost:".concat(port));
 });
+exports.default = app;

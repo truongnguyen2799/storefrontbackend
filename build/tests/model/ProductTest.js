@@ -39,29 +39,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var databasetest_1 = __importDefault(require("../databasetest"));
+var database_1 = __importDefault(require("../../database"));
 var Product_1 = require("../../models/Product");
 var productStore = new Product_1.ProductStore();
 describe("Tests for function in Product", function () {
+    var id = 0;
     describe("test function index", function () {
+        var expectRs = 0;
         beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
             var conn, sql, result, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, databasetest_1.default.connect()];
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "INSERT INTO \"Product\" (name, price, category) VALUES ('name1', 10, 'cate1'), ('name2', 10, 'cate1') RETURNING *";
+                        sql = "SELECT * FROM \"Product\"";
                         return [4 /*yield*/, conn.query(sql, [])];
                     case 2:
                         result = _a.sent();
+                        expectRs = result.rowCount;
                         conn.release();
                         return [3 /*break*/, 4];
                     case 3:
                         error_1 = _a.sent();
-                        console.log("🚀 ~ file: ProductTest.ts:20 ~ beforeEach ~ error:", error_1);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -71,51 +73,29 @@ describe("Tests for function in Product", function () {
             var products, length;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, productStore.index];
+                    case 0: return [4 /*yield*/, productStore.index()];
                     case 1:
                         products = _a.sent();
                         length = products.length;
-                        expect(length).toBe(2);
+                        expect(length).toBe(expectRs);
                         return [2 /*return*/];
                 }
             });
         }); });
-        afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var conn, sql, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, databasetest_1.default.connect()];
-                    case 1:
-                        conn = _a.sent();
-                        sql = "DELETE FROM \"Product\" AS product)";
-                        return [4 /*yield*/, conn.query(sql, [])];
-                    case 2:
-                        _a.sent();
-                        conn.release();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_2 = _a.sent();
-                        console.log("🚀 ~ file: ProductTest.ts:40 ~ afterEach ~ error:", error_2);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        }); });
+        afterEach;
     });
     describe("test function show", function () {
-        var id = 1;
+        id = 0;
         beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var conn, sql, result, error_3;
+            var conn, sql, result, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, databasetest_1.default.connect()];
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "INSERT INTO \"Product\" (name, price, category) VALUES ('name1', 10, 'cate1')RETURNING *";
+                        sql = "INSERT INTO \"Product\" (name, price, category) VALUES ('test1', 10, 'cate1')RETURNING *";
                         return [4 /*yield*/, conn.query(sql, [])];
                     case 2:
                         result = _a.sent();
@@ -123,8 +103,7 @@ describe("Tests for function in Product", function () {
                         conn.release();
                         return [3 /*break*/, 4];
                     case 3:
-                        error_3 = _a.sent();
-                        console.log("🚀 ~ file: ProductTest.ts:20 ~ beforeEach ~ error:", error_3);
+                        error_2 = _a.sent();
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -138,44 +117,32 @@ describe("Tests for function in Product", function () {
                     case 1:
                         product = _a.sent();
                         name = product.name;
-                        expect(name).toBe("name1");
+                        expect(name).toBe("test1");
                         return [2 /*return*/];
                 }
             });
         }); });
         afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var conn, sql, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, databasetest_1.default.connect()];
+                    case 0: return [4 /*yield*/, productStore.deleteById(id)];
                     case 1:
-                        conn = _a.sent();
-                        sql = "DELETE FROM \"Product\" AS product)";
-                        return [4 /*yield*/, conn.query(sql, [])];
-                    case 2:
                         _a.sent();
-                        conn.release();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_4 = _a.sent();
-                        console.log("🚀 ~ file: ProductTest.ts:40 ~ afterEach ~ error:", error_4);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         }); });
     });
     describe("test function insert", function () {
+        id = 0;
         it("Insert", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var product, result, id, test;
+            var product, result, actual;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         product = {
                             id: 1,
-                            name: "name1",
+                            name: "test1",
                             price: 12,
                             category: "",
                         };
@@ -185,35 +152,117 @@ describe("Tests for function in Product", function () {
                         id = result[0].id;
                         return [4 /*yield*/, productStore.show(id)];
                     case 2:
-                        test = _a.sent();
-                        expect(test.name).toBe("name1");
+                        actual = _a.sent();
+                        expect(actual.name).toBe(product.name);
                         return [2 /*return*/];
                 }
             });
         }); });
         afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var conn, sql, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, productStore.deleteById(id)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("test function update", function () {
+        id = 0;
+        beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+            var conn, sql, result, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, databasetest_1.default.connect()];
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "DELETE FROM \"Product\" AS product)";
+                        sql = "INSERT INTO \"Product\" (name, price, category) VALUES ('test1', 10, 'cate1')RETURNING *";
                         return [4 /*yield*/, conn.query(sql, [])];
                     case 2:
-                        _a.sent();
+                        result = _a.sent();
+                        id = result.rows[0].id;
                         conn.release();
                         return [3 /*break*/, 4];
                     case 3:
-                        error_5 = _a.sent();
-                        console.log("🚀 ~ file: ProductTest.ts:40 ~ afterEach ~ error:", error_5);
+                        error_3 = _a.sent();
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
             });
         }); });
+        it("Update", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var product, actual;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        product = {
+                            id: id,
+                            name: "testupdate",
+                            price: 12,
+                            category: "",
+                        };
+                        return [4 /*yield*/, productStore.update(product)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, productStore.show(id)];
+                    case 2:
+                        actual = _a.sent();
+                        expect(actual.name).toBe(product.name);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, productStore.deleteById(id)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
     });
-    afterAll(function () { });
+    describe("test function show", function () {
+        id = 0;
+        beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+            var conn, sql, result, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "INSERT INTO \"Product\" (name, price, category) VALUES ('test1', 10, 'cate1')RETURNING *";
+                        return [4 /*yield*/, conn.query(sql, [])];
+                    case 2:
+                        result = _a.sent();
+                        id = result.rows[0].id;
+                        conn.release();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_4 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Delete", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var actual;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, productStore.deleteById(id)];
+                    case 1:
+                        actual = _a.sent();
+                        expect(actual).toBe(1);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
 });
