@@ -72,7 +72,7 @@ const userController = (app: express.Application) => {
   app.post("/login", login);
   app.get("/user/all", verifyAuthToken, index);
   app.get("/user/:id", verifyAuthToken, show);
-  app.post("/user/insert", verifyAuthToken, insert);
+  app.post("/user/insert", insert);
 };
 
 export default userController;
