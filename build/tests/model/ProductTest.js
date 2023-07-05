@@ -107,7 +107,7 @@ describe("Tests for function in Product", function () {
     describe("test function show", function () {
         var id = 1;
         beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-            var conn, sql, result, id_1, error_3;
+            var conn, sql, result, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -119,7 +119,7 @@ describe("Tests for function in Product", function () {
                         return [4 /*yield*/, conn.query(sql, [])];
                     case 2:
                         result = _a.sent();
-                        id_1 = result.rows[0].id;
+                        id = result.rows[0].id;
                         conn.release();
                         return [3 /*break*/, 4];
                     case 3:
@@ -161,6 +161,54 @@ describe("Tests for function in Product", function () {
                     case 3:
                         error_4 = _a.sent();
                         console.log("🚀 ~ file: ProductTest.ts:40 ~ afterEach ~ error:", error_4);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("test function insert", function () {
+        it("Insert", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var product, result, id, test;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        product = {
+                            id: 1,
+                            name: "name1",
+                            price: 12,
+                            category: "",
+                        };
+                        return [4 /*yield*/, productStore.insert(product)];
+                    case 1:
+                        result = _a.sent();
+                        id = result[0].id;
+                        return [4 /*yield*/, productStore.show(id)];
+                    case 2:
+                        test = _a.sent();
+                        expect(test.name).toBe("name1");
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+            var conn, sql, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, databasetest_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "DELETE FROM \"Product\" AS product)";
+                        return [4 /*yield*/, conn.query(sql, [])];
+                    case 2:
+                        _a.sent();
+                        conn.release();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_5 = _a.sent();
+                        console.log("🚀 ~ file: ProductTest.ts:40 ~ afterEach ~ error:", error_5);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
