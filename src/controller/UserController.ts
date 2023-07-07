@@ -8,16 +8,21 @@ dotenv.config();
 const userStore = new UserStore();
 
 const login = async (request: Request, response: Response) => {
-  const account: string = request.body.account;
-  const password: string = request.body.password;
-  const check = await userStore.login(account, password);
-  if (check) {
-    const token = generateAccessToken(account);
-    response.status(200);
-    response.json({ token });
-  } else {
+  try {
+    const account: string = request.body.account;
+    const password: string = request.body.password;
+    const check = await userStore.login(account, password);
+    if (check) {
+      const token = generateAccessToken(account);
+      response.status(200);
+      response.json({ token });
+    } else {
+      response.status(400);
+      response.json("Account or password not valid");
+    }
+  } catch (error) {
     response.status(400);
-    response.json("Account or password not valid");
+    response.json("Have error");
   }
 };
 
@@ -37,7 +42,7 @@ const show = async (request: Request, response: Response) => {
     const user = await userStore.getById(id);
     response.json(user);
   } catch (error) {
-    response.status(401);
+    response.json("Have error");
   }
 };
 
@@ -51,7 +56,7 @@ const insert = async (request: Request, response: Response) => {
       account: request.body.account,
     };
     const result = await userStore.insert(user);
-    console.log("🚀 ~ file: UserController.ts:54 ~ insert ~ result:", result)
+    console.log("🚀 ~ file: UserController.ts:54 ~ insert ~ result:", result);
     switch (result) {
       case -1:
         response.status(400);

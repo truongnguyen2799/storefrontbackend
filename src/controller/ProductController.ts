@@ -5,9 +5,14 @@ import { verifyAuthToken } from "../authen";
 const productStore = new ProductStore();
 
 const getAllProduct = async (request: Request, response: Response) => {
-  const products = await productStore.index();
-  console.log(products);
-  response.json(products);
+  try {
+    const products = await productStore.index();
+    console.log(products);
+    response.json(products);
+  } catch (error) {
+    response.status(400);
+    response.json("Have error");
+  }
 };
 
 const getProductById = async (request: Request, response: Response) => {
@@ -57,15 +62,15 @@ const updateProduct = async (request: Request, response: Response) => {
 };
 
 const deleteProduct = async (request: Request, response: Response) => {
-    try {
-        let id: number = parseInt(request.params.id);
-        const result = await productStore.deleteById(id);
-        response.send("Delete " + result + " record");
-      } catch (error) {
-        response.status(400);
-        response.send("Product id not valid");
-      }
-  };
+  try {
+    let id: number = parseInt(request.params.id);
+    const result = await productStore.deleteById(id);
+    response.send("Delete " + result + " record");
+  } catch (error) {
+    response.status(400);
+    response.send("Product id not valid");
+  }
+};
 
 const productControllers = (app: express.Application) => {
   app.get("/product/all", getAllProduct);
