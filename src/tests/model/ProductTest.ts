@@ -16,7 +16,7 @@ describe("Tests for function in Product", () => {
         conn.release();
       } catch (error) {}
     });
-    it("index", async () => {
+    it("index product", async () => {
       const products = await productStore.index();
       const length = products.length;
       expect(length).toBe(expectRs);
@@ -35,7 +35,7 @@ describe("Tests for function in Product", () => {
         conn.release();
       } catch (error) {}
     });
-    it("Show", async () => {
+    it("Show  product", async () => {
       const product = await productStore.show(id);
       const name = product.name;
       expect(name).toBe("test1");
@@ -47,7 +47,7 @@ describe("Tests for function in Product", () => {
 
   describe("test function insert", () => {
     id = 0;
-    it("Insert", async () => {
+    it("Insert product", async () => {
       const product: Product = {
         id: 1,
         name: "test1",
@@ -76,7 +76,7 @@ describe("Tests for function in Product", () => {
         conn.release();
       } catch (error) {}
     });
-    it("Update", async () => {
+    it("Update product", async () => {
       const product: Product = {
         id: id,
         name: "testupdate",
@@ -103,7 +103,7 @@ describe("Tests for function in Product", () => {
         conn.release();
       } catch (error) {}
     });
-    it("Delete", async () => {
+    it("Delete product", async () => {
       const actual = await productStore.deleteById(id);
       expect(actual).toBe(1);
     });

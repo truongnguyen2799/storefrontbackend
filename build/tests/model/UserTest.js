@@ -39,21 +39,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
 var database_1 = __importDefault(require("../../database"));
-var server_1 = __importDefault(require("../../server"));
 var User_1 = require("../../models/User");
-var request = (0, supertest_1.default)(server_1.default);
 var userStore = new User_1.UserStore();
-describe("Test api user", function () {
-    var user = {
-        id: 0,
-        firstname: "TestUser",
-        lastname: "TestUser",
-        password: "TestUser",
-        account: "TestUser",
-    };
-    describe("Test api login", function () {
+var user = {
+    id: 0,
+    firstname: "TestLogin",
+    lastname: "TestLogin",
+    password: "TestLogin",
+    account: "TestLogin",
+};
+describe("Tests for function in User", function () {
+    describe("Test function login", function () {
         beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -64,17 +61,14 @@ describe("Test api user", function () {
                 }
             });
         }); });
-        it("Login", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response;
+        it("login", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var actual;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.post("/login").send({
-                            account: user.account,
-                            password: user.password,
-                        })];
+                    case 0: return [4 /*yield*/, userStore.login(user.account, user.password)];
                     case 1:
-                        response = _a.sent();
-                        expect(response.status).toBe(200);
+                        actual = _a.sent();
+                        expect(actual).toBe(true);
                         return [2 /*return*/];
                 }
             });
@@ -90,55 +84,20 @@ describe("Test api user", function () {
                         return [4 /*yield*/, conn.query(sql, [user.account])];
                     case 2:
                         _a.sent();
-                        conn.release();
                         return [2 /*return*/];
                 }
             });
         }); });
     });
-    describe("Test api failed without token", function () {
-        it("Without Token:", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.get("/user/all")];
-                    case 1:
-                        response = _a.sent();
-                        expect(response.status).toBe(401);
-                        expect(response.body).toBe("Need Login");
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-    });
-    describe("Test api /user/all", function () {
-        beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+    describe("Test function insert", function () {
+        it("insert user", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, userStore.insert(user)];
                     case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-        it("/user/all", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var login, token, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.post("/login").send({
-                            account: user.account,
-                            password: user.password,
-                        })];
-                    case 1:
-                        login = _a.sent();
-                        token = login.body.token;
-                        return [4 /*yield*/, request
-                                .get("/user/all")
-                                .set("Authorization", "Bearer ".concat(token))];
-                    case 2:
-                        response = _a.sent();
-                        expect(response.status).toBe(200);
+                        result = _a.sent();
+                        expect(result).toBe(0);
                         return [2 /*return*/];
                 }
             });
@@ -154,13 +113,12 @@ describe("Test api user", function () {
                         return [4 /*yield*/, conn.query(sql, [user.account])];
                     case 2:
                         _a.sent();
-                        conn.release();
                         return [2 /*return*/];
                 }
             });
         }); });
     });
-    describe("Test api /user/show/:id", function () {
+    describe("test function getByAccount", function () {
         beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -171,23 +129,15 @@ describe("Test api user", function () {
                 }
             });
         }); });
-        it("/user/show/:id", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var login, token, response;
+        it("getByAccount", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var userActual, fristnameActual;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.post("/login").send({
-                            account: user.account,
-                            password: user.password,
-                        })];
+                    case 0: return [4 /*yield*/, userStore.getByAccount(user.account)];
                     case 1:
-                        login = _a.sent();
-                        token = login.body.token;
-                        return [4 /*yield*/, request
-                                .get("/user/show/9999")
-                                .set("Authorization", "Bearer ".concat(token))];
-                    case 2:
-                        response = _a.sent();
-                        expect(response.status).toBe(200);
+                        userActual = _a.sent();
+                        fristnameActual = userActual.firstname;
+                        expect(fristnameActual).toBe(user.firstname);
                         return [2 /*return*/];
                 }
             });
@@ -203,27 +153,88 @@ describe("Test api user", function () {
                         return [4 /*yield*/, conn.query(sql, [user.account])];
                     case 2:
                         _a.sent();
-                        conn.release();
                         return [2 /*return*/];
                 }
             });
         }); });
     });
-    describe("Test api insert user ", function () {
-        it("Register", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response, statusActual;
+    describe("test function index", function () {
+        var expectRs = 0;
+        beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+            var conn, sql, result, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.post("/user/insert").send({
-                            firstname: "TestUser",
-                            lastname: "TestUser",
-                            password: "TestUser",
-                            account: "TestUser",
-                        })];
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
-                        response = _a.sent();
-                        statusActual = response.status;
-                        expect(statusActual).toBe(200);
+                        conn = _a.sent();
+                        sql = "SELECT * FROM \"User\"";
+                        return [4 /*yield*/, conn.query(sql, [])];
+                    case 2:
+                        result = _a.sent();
+                        expectRs = result.rowCount;
+                        conn.release();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_1 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("index product", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var products, length;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, userStore.index()];
+                    case 1:
+                        products = _a.sent();
+                        length = products.length;
+                        expect(length).toBe(expectRs);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("test function getById", function () {
+        var id = 0;
+        beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+            var conn, sql, result, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "INSERT INTO \"User\" (firstname, lastname, account, password) VALUES ($1, $2, $3, $4)RETURNING *";
+                        return [4 /*yield*/, conn.query(sql, [
+                                user.firstname,
+                                user.lastname,
+                                user.account,
+                                user.password,
+                            ])];
+                    case 2:
+                        result = _a.sent();
+                        id = result.rows[0].id;
+                        conn.release();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_2 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("getById user", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var actual;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, userStore.getById(id)];
+                    case 1:
+                        actual = _a.sent();
+                        expect(actual.account).toBe(user.account);
                         return [2 /*return*/];
                 }
             });
@@ -235,11 +246,10 @@ describe("Test api user", function () {
                     case 0: return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "DELETE FROM \"User\" WHERE account = $1";
+                        sql = "DELETE FROM \"User\" WHERE account = ($1)";
                         return [4 /*yield*/, conn.query(sql, [user.account])];
                     case 2:
                         _a.sent();
-                        conn.release();
                         return [2 /*return*/];
                 }
             });

@@ -45,10 +45,11 @@ var authen_1 = require("../authen");
 dotenv_1.default.config();
 var userStore = new User_1.UserStore();
 var login = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var account, password, check, token;
+    var account, password, check, token, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 2, , 3]);
                 account = request.body.account;
                 password = request.body.password;
                 return [4 /*yield*/, userStore.login(account, password)];
@@ -63,12 +64,18 @@ var login = function (request, response) { return __awaiter(void 0, void 0, void
                     response.status(400);
                     response.json("Account or password not valid");
                 }
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                response.status(400);
+                response.json("Have error");
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var index = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, error_1;
+    var users, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -80,7 +87,7 @@ var index = function (request, response) { return __awaiter(void 0, void 0, void
                 response.json(users);
                 return [3 /*break*/, 3];
             case 2:
-                error_1 = _a.sent();
+                error_2 = _a.sent();
                 response.status(401);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -88,7 +95,7 @@ var index = function (request, response) { return __awaiter(void 0, void 0, void
     });
 }); };
 var show = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, user, error_2;
+    var id, user, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -100,22 +107,22 @@ var show = function (request, response) { return __awaiter(void 0, void 0, void 
                 response.json(user);
                 return [3 /*break*/, 3];
             case 2:
-                error_2 = _a.sent();
-                response.status(401);
+                error_3 = _a.sent();
+                response.json("Have error");
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var insert = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, result, error_3;
+    var user, result, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user = {
                     id: 0,
-                    fristname: request.body.fristname,
+                    firstname: request.body.firstname,
                     lastname: request.body.lastname,
                     password: request.body.password,
                     account: request.body.account,
@@ -123,7 +130,6 @@ var insert = function (request, response) { return __awaiter(void 0, void 0, voi
                 return [4 /*yield*/, userStore.insert(user)];
             case 1:
                 result = _a.sent();
-                console.log("🚀 ~ file: UserController.ts:54 ~ insert ~ result:", result);
                 switch (result) {
                     case -1:
                         response.status(400);
@@ -138,7 +144,7 @@ var insert = function (request, response) { return __awaiter(void 0, void 0, voi
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_3 = _a.sent();
+                error_4 = _a.sent();
                 response.status(400);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -148,7 +154,7 @@ var insert = function (request, response) { return __awaiter(void 0, void 0, voi
 var userController = function (app) {
     app.post("/login", login);
     app.get("/user/all", authen_1.verifyAuthToken, index);
-    app.get("/user/:id", authen_1.verifyAuthToken, show);
+    app.get("/user/show/:id", authen_1.verifyAuthToken, show);
     app.post("/user/insert", insert);
 };
 exports.default = userController;

@@ -75,7 +75,7 @@ var UserStore = /** @class */ (function () {
                         return [2 /*return*/, check];
                     case 3:
                         error_1 = _a.sent();
-                        return [2 /*return*/, check];
+                        return [2 /*return*/, false];
                     case 4: return [2 /*return*/];
                 }
             });
@@ -83,7 +83,7 @@ var UserStore = /** @class */ (function () {
     };
     UserStore.prototype.insert = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var checkUser, hash, conn, sql, result, error_2;
+            var checkUser, hash, conn, sql, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -95,24 +95,24 @@ var UserStore = /** @class */ (function () {
                         return [2 /*return*/, -1];
                     case 2:
                         hash = bcrypt_1.default.hashSync(user.password + pepper, saltRounds);
-                        console.log(typeof (hash));
                         return [4 /*yield*/, database_1.default.connect()];
                     case 3:
                         conn = _a.sent();
                         sql = "INSERT INTO \"User\" (firstname, lastname, account, password) VALUES ($1, $2, $3, $4)";
                         return [4 /*yield*/, conn.query(sql, [
-                                user.fristname,
+                                user.firstname,
                                 user.lastname,
                                 user.account,
-                                hash,
+                                hash
                             ])];
                     case 4:
-                        result = _a.sent();
+                        _a.sent();
                         conn.release();
                         return [2 /*return*/, 0];
                     case 5: return [3 /*break*/, 7];
                     case 6:
                         error_2 = _a.sent();
+                        console.log("🚀 ~ file: User.ts:64 ~ UserStore ~ insert ~ error:", error_2);
                         throw new Error("Error: ".concat(error_2));
                     case 7: return [2 /*return*/];
                 }
@@ -133,6 +133,7 @@ var UserStore = /** @class */ (function () {
                         return [4 /*yield*/, conn.query(sql, [account])];
                     case 2:
                         result = _a.sent();
+                        conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
                         error_3 = _a.sent();

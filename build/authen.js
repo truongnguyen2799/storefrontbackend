@@ -15,7 +15,6 @@ var generateAccessToken = function (account) {
 };
 exports.generateAccessToken = generateAccessToken;
 var verifyAuthToken = function (request, response, next) {
-    console.log("vao authen");
     try {
         var authorizationHeader = request.headers.authorization;
         if (!authorizationHeader) {

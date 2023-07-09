@@ -50,13 +50,12 @@ const insert = async (request: Request, response: Response) => {
   try {
     const user: User = {
       id: 0,
-      fristname: request.body.fristname,
+      firstname: request.body.firstname,
       lastname: request.body.lastname,
       password: request.body.password,
       account: request.body.account,
     };
     const result = await userStore.insert(user);
-    console.log("🚀 ~ file: UserController.ts:54 ~ insert ~ result:", result);
     switch (result) {
       case -1:
         response.status(400);
@@ -77,7 +76,7 @@ const insert = async (request: Request, response: Response) => {
 const userController = (app: express.Application) => {
   app.post("/login", login);
   app.get("/user/all", verifyAuthToken, index);
-  app.get("/user/:id", verifyAuthToken, show);
+  app.get("/user/show/:id", verifyAuthToken, show);
   app.post("/user/insert", insert);
 };
 

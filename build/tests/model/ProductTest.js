@@ -69,7 +69,7 @@ describe("Tests for function in Product", function () {
                 }
             });
         }); });
-        it("index", function () { return __awaiter(void 0, void 0, void 0, function () {
+        it("index product", function () { return __awaiter(void 0, void 0, void 0, function () {
             var products, length;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -109,7 +109,7 @@ describe("Tests for function in Product", function () {
                 }
             });
         }); });
-        it("Show", function () { return __awaiter(void 0, void 0, void 0, function () {
+        it("Show  product", function () { return __awaiter(void 0, void 0, void 0, function () {
             var product, name;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -135,7 +135,7 @@ describe("Tests for function in Product", function () {
     });
     describe("test function insert", function () {
         id = 0;
-        it("Insert", function () { return __awaiter(void 0, void 0, void 0, function () {
+        it("Insert product", function () { return __awaiter(void 0, void 0, void 0, function () {
             var product, result, actual;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -194,7 +194,7 @@ describe("Tests for function in Product", function () {
                 }
             });
         }); });
-        it("Update", function () { return __awaiter(void 0, void 0, void 0, function () {
+        it("Update product", function () { return __awaiter(void 0, void 0, void 0, function () {
             var product, actual;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -252,7 +252,7 @@ describe("Tests for function in Product", function () {
                 }
             });
         }); });
-        it("Delete", function () { return __awaiter(void 0, void 0, void 0, function () {
+        it("Delete product", function () { return __awaiter(void 0, void 0, void 0, function () {
             var actual;
             return __generator(this, function (_a) {
                 switch (_a.label) {

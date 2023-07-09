@@ -8,7 +8,6 @@ const getOrderById = async (request: Request, response: Response) => {
   try {
     let userId = parseInt(request.params.userid);
     const result = await orderStore.getByUser(userId);
-    console.log("🚀 ~ file: OrderController.ts:11 ~ getOrderById ~ result:", result)
     response.status(200);
     response.json(result);
   } catch (error) {

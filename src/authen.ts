@@ -22,7 +22,6 @@ const verifyAuthToken = (
   response: Response,
   next: NextFunction
 ) => {
-  console.log("vao authen");
   try {
     const authorizationHeader = request.headers.authorization;
     if (!authorizationHeader) {

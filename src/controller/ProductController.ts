@@ -7,7 +7,6 @@ const productStore = new ProductStore();
 const getAllProduct = async (request: Request, response: Response) => {
   try {
     const products = await productStore.index();
-    console.log(products);
     response.json(products);
   } catch (error) {
     response.status(400);
@@ -55,7 +54,6 @@ const updateProduct = async (request: Request, response: Response) => {
     response.status(200);
     response.json(result);
   } catch (error) {
-    console.log(error);
     response.status(400);
     response.send("Param not valid");
   }
@@ -74,7 +72,7 @@ const deleteProduct = async (request: Request, response: Response) => {
 
 const productControllers = (app: express.Application) => {
   app.get("/product/all", getAllProduct);
-  app.get("/product/:id", getProductById);
+  app.get("/product/show/:id", getProductById);
   app.post("/product/insert", verifyAuthToken, insertProduct);
   app.put("/product/update", verifyAuthToken, updateProduct);
   app.delete("/product/:id", verifyAuthToken, deleteProduct);

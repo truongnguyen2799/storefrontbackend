@@ -1,6 +1,5 @@
 import { Pool } from "pg";
 import Client from "../database";
-import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
 const saltRounds = process.env.SALT_ROUNDS
@@ -11,7 +10,7 @@ const pepper = "ABCD#12";
 
 export type User = {
   id: Number;
-  fristname: string;
+  firstname: string;
   lastname: string;
   password: string;
   account: string;
@@ -38,7 +37,7 @@ export class UserStore {
       }
       return check;
     } catch (error) {
-      return check;
+      return false;
     }
   }
 
@@ -49,19 +48,19 @@ export class UserStore {
         return -1;
       } else {
         const hash = bcrypt.hashSync(user.password + pepper, saltRounds);
-        console.log(typeof(hash));
         const conn = await Client.connect();
         const sql = `INSERT INTO "User" (firstname, lastname, account, password) VALUES ($1, $2, $3, $4)`;
-        const result = await conn.query(sql, [
-          user.fristname,
+        await conn.query(sql, [
+          user.firstname,
           user.lastname,
           user.account,
-          hash,
+          hash
         ]);
         conn.release();
         return 0;
       }
     } catch (error) {
+      console.log("🚀 ~ file: User.ts:64 ~ UserStore ~ insert ~ error:", error);
       throw new Error(`Error: ${error}`);
     }
   }
@@ -71,6 +70,7 @@ export class UserStore {
       const conn = await Client.connect();
       const sql = `SELECT * FROM "User" AS u WHERE u.account = ($1)`;
       const result = await conn.query(sql, [account]);
+      conn.release();
       return result.rows[0];
     } catch (error) {
       throw new Error(`Could not get users. Error: ${error}`);

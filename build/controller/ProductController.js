@@ -40,20 +40,27 @@ var Product_1 = require("../models/Product");
 var authen_1 = require("../authen");
 var productStore = new Product_1.ProductStore();
 var getAllProduct = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, productStore.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, productStore.index()];
             case 1:
                 products = _a.sent();
-                console.log(products);
                 response.json(products);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                response.status(400);
+                response.json("Have error");
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var getProductById = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, product, error_1;
+    var id, product, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -65,7 +72,7 @@ var getProductById = function (request, response) { return __awaiter(void 0, voi
                 response.json(product);
                 return [3 /*break*/, 3];
             case 2:
-                error_1 = _a.sent();
+                error_2 = _a.sent();
                 response.status(400);
                 response.send("Product id not valid");
                 return [3 /*break*/, 3];
@@ -74,7 +81,7 @@ var getProductById = function (request, response) { return __awaiter(void 0, voi
     });
 }); };
 var insertProduct = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, result, error_2;
+    var product, result, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -92,7 +99,7 @@ var insertProduct = function (request, response) { return __awaiter(void 0, void
                 response.json(result);
                 return [3 /*break*/, 3];
             case 2:
-                error_2 = _a.sent();
+                error_3 = _a.sent();
                 response.status(400);
                 response.send("Param not valid");
                 return [3 /*break*/, 3];
@@ -101,7 +108,7 @@ var insertProduct = function (request, response) { return __awaiter(void 0, void
     });
 }); };
 var updateProduct = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, result, error_3;
+    var product, result, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -119,8 +126,7 @@ var updateProduct = function (request, response) { return __awaiter(void 0, void
                 response.json(result);
                 return [3 /*break*/, 3];
             case 2:
-                error_3 = _a.sent();
-                console.log(error_3);
+                error_4 = _a.sent();
                 response.status(400);
                 response.send("Param not valid");
                 return [3 /*break*/, 3];
@@ -129,7 +135,7 @@ var updateProduct = function (request, response) { return __awaiter(void 0, void
     });
 }); };
 var deleteProduct = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, result, error_4;
+    var id, result, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -141,7 +147,7 @@ var deleteProduct = function (request, response) { return __awaiter(void 0, void
                 response.send("Delete " + result + " record");
                 return [3 /*break*/, 3];
             case 2:
-                error_4 = _a.sent();
+                error_5 = _a.sent();
                 response.status(400);
                 response.send("Product id not valid");
                 return [3 /*break*/, 3];
@@ -151,7 +157,7 @@ var deleteProduct = function (request, response) { return __awaiter(void 0, void
 }); };
 var productControllers = function (app) {
     app.get("/product/all", getAllProduct);
-    app.get("/product/:id", getProductById);
+    app.get("/product/show/:id", getProductById);
     app.post("/product/insert", authen_1.verifyAuthToken, insertProduct);
     app.put("/product/update", authen_1.verifyAuthToken, updateProduct);
     app.delete("/product/:id", authen_1.verifyAuthToken, deleteProduct);

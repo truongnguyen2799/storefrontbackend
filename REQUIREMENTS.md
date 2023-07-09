@@ -8,7 +8,7 @@ This API serves as the backend for a storefront application. It provides the nec
 ### Products
 
 - `GET /product/all` - Retrieve all products
-- `GET /product/:id` - Retrieve a specific product by ID
+- `GET /product/show/:id` - Retrieve a specific product by ID
 - `POST /product/insert` - Create a new product [token required]
 
 ### Orders
@@ -19,7 +19,7 @@ This API serves as the backend for a storefront application. It provides the nec
 
 - `POST /login` - User login
 - `GET /user/all` - Show all user
-- `GET /user/:id` - Show user by id
+- `GET /user/show/:id` - Show user by id
 - `POST /user/insert` - Create a new user
 
 ## Database Schema

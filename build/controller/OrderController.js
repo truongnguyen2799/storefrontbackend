@@ -49,7 +49,6 @@ var getOrderById = function (request, response) { return __awaiter(void 0, void 
                 return [4 /*yield*/, orderStore.getByUser(userId)];
             case 1:
                 result = _a.sent();
-                console.log("🚀 ~ file: OrderController.ts:11 ~ getOrderById ~ result:", result);
                 response.status(200);
                 response.json(result);
                 return [3 /*break*/, 3];

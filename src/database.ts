@@ -10,7 +10,7 @@ const {
     POSTGRES_PASSWORD,
 } = process.env
 
-const client = new Pool({
+var client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_DB,
     user: POSTGRES_USER,
