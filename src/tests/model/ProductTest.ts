@@ -29,6 +29,7 @@ describe("Tests for function in Product", () => {
     beforeEach(async () => {
       try {
         const conn = await Client.connect();
+        console.log("🚀 ~ file: ProductTest.ts:32 ~ beforeEach ~ Client:", Client)
         const sql = `INSERT INTO "Product" (name, price, category) VALUES ('test1', 10, 'cate1')RETURNING *`;
         const result = await conn.query(sql, []);
         id = result.rows[0].id;

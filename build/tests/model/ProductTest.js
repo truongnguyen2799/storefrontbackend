@@ -95,6 +95,7 @@ describe("Tests for function in Product", function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
+                        console.log("🚀 ~ file: ProductTest.ts:32 ~ beforeEach ~ Client:", database_1.default);
                         sql = "INSERT INTO \"Product\" (name, price, category) VALUES ('test1', 10, 'cate1')RETURNING *";
                         return [4 /*yield*/, conn.query(sql, [])];
                     case 2:

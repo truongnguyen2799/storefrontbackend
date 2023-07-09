@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run build && npm run jasmine",
+    "test": "set ENV='test' && db-migrate -e test up && npx tsc && jasmine && db-migrate -e test reset",
     "jasmine": "jasmine",
     "build": "npx tsc",
     "lint": "eslint 'index.js'",
