@@ -19,7 +19,7 @@ describe("Test api order ", () => {
 
   describe("Test api get order by user ", () => {
     beforeEach(async () => {
-      userStore.insert(user);
+      await userStore.insert(user);
     });
     it("Order by user", async () => {
       const login = await request.post("/login").send({
